@@ -1,4 +1,7 @@
+require 'faraday'
+require 'faraday_middleware'
 require 'digest/sha1'
+require 'nokogiri'
 
 module SlideshareApi
   class Client
@@ -13,7 +16,7 @@ module SlideshareApi
     end
 
     def slideshow(slideshow_url)
-      @connection.get('get_slideshow', api_validation_params.merge({slideshow_url: slideshow_url})).body
+      SlideshareApi::Model::Slideshow.new Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge({slideshow_url: slideshow_url})).body)
     end
 
     private

@@ -26,6 +26,6 @@ describe SlideshareApi::Client do
 
     subject { slideshare_client.slideshow slideshow_url }
 
-    it { should eq slideshow_raw_xml }
+    it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
   end
 end
