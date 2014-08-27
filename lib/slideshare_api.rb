@@ -1,5 +1,4 @@
-require "slideshare_api/version"
+require 'faraday'
+require 'faraday_middleware'
 
-module SlideshareApi
-  # Your code goes here...
-end
+Gem.find_files('slideshare_api/**/*.rb').each { |file| require file }
