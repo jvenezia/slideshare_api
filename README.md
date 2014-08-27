@@ -1,5 +1,6 @@
 # SlideshareApi
 [![Build](https://travis-ci.org/jvenezia/slideshare_api.svg?branch=master)](https://travis-ci.org/jvenezia/slideshare_api)
+[![Gem Version](https://badge.fury.io/rb/slideshare_api.svg)](http://badge.fury.io/rb/slideshare_api)
 
 Slideshare ruby wrapper for the Slideshare API.
 
