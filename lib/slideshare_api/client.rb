@@ -15,8 +15,12 @@ module SlideshareApi
       build_connection
     end
 
-    def slideshow(slideshow_url)
-      SlideshareApi::Model::Slideshow.new Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge({slideshow_url: slideshow_url})).body)
+    def slideshow(options = {})
+      params = {}
+      params.merge!({slideshow_url: options[:slideshow_url]}) if options[:slideshow_url]
+      params.merge!({slideshow_id: options[:slideshow_id]}) if options[:slideshow_id]
+      params.merge!({detailed: 1}) if options[:detailed]
+      SlideshareApi::Model::Slideshow.new Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge(params)).body)
     end
 
     private

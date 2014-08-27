@@ -19,13 +19,27 @@ describe SlideshareApi::Client do
 
   describe '.slideshow' do
     let(:slideshow_raw_xml) { open('spec/fixtures/slideshow.xml').read }
-    let(:slideshow_url) { 'http://fr.slideshare.net/jeremyvenezia/prerequis-pour-appliquer-le-lean-startup-en-entreprise' }
 
-    before { expect(connection).to receive(:get).with('get_slideshow', api_validation_params.merge({slideshow_url: slideshow_url})).and_return(connection) }
     before { expect(connection).to receive(:body).and_return(slideshow_raw_xml) }
 
-    subject { slideshare_client.slideshow slideshow_url }
+    context 'get from slideshow url' do
+      let(:slideshow_url) { 'http://fr.slideshare.net/jeremyvenezia/prerequis-pour-appliquer-le-lean-startup-en-entreprise' }
 
-    it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+      before { expect(connection).to receive(:get).with('get_slideshow', api_validation_params.merge({slideshow_url: slideshow_url})).and_return(connection) }
+
+      subject { slideshare_client.slideshow slideshow_url: slideshow_url }
+
+      it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+    end
+
+    context 'get from slideshow id' do
+      let(:slideshow_id) { '1234' }
+
+      before { expect(connection).to receive(:get).with('get_slideshow', api_validation_params.merge({slideshow_id: slideshow_id})).and_return(connection) }
+
+      subject { slideshare_client.slideshow slideshow_id: slideshow_id }
+
+      it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+    end
   end
 end
