@@ -32,13 +32,6 @@ Get a slideshow:
 ```ruby
 slideshow_url = 'http://fr.slideshare.net/awesome_slideshow'
 slideshow = client.slideshow(slideshow_url) #=> returns a SlideshareApi::Model::Slideshow
-slideshow.id
-slideshow.title
-slideshow.description
-slideshow.username
-slideshow.url
-slideshow.embed
-slideshow.language
 ```
 
 ## Contributing
