@@ -33,15 +33,33 @@ client = SlideshareApi::Client.new api_key, shared_secret
 Get a slideshow:
 ```ruby
 # from url...
-slideshow_url = 'http://fr.slideshare.net/awesome_slideshow'
+slideshow_url = 'http://fr.slideshare.net/awesome/slideshow'
 slideshow = client.slideshow(slideshow_url: slideshow_url) #=> returns a SlideshareApi::Model::Slideshow
 
 # from id...
 slideshow_id = '1234'
 slideshow = client.slideshow(slideshow_id: slideshow_id) #=> returns a SlideshareApi::Model::Slideshow
 
-# with optional informations...
+# with optional data...
 slideshow = client.slideshow(slideshow_id: slideshow_id, detailed: true) #=> returns a SlideshareApi::Model::Slideshow
+```
+
+Get slideshows:
+```ruby
+# by tag...
+tag = 'ruby'
+slideshow = client.slideshows(tag: tag) #=> returns an array of SlideshareApi::Model::Slideshow
+
+# by group...
+group = 'group'
+slideshow = client.slideshows(group: group) #=> returns an array of SlideshareApi::Model::Slideshow
+
+# by user...
+user = 'username'
+slideshow = client.slideshows(user: user) #=> returns an array of SlideshareApi::Model::Slideshow
+
+# with optional data...
+slideshow = client.slideshows(user: user, detailed: true) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
 
 ## Contributing

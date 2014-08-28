@@ -17,15 +17,38 @@ module SlideshareApi
 
     def slideshow(options = {})
       params = {}
-      params.merge!({slideshow_url: cleaned_url(options[:slideshow_url])}) if options[:slideshow_url]
-      params.merge!({slideshow_id: options[:slideshow_id]}) if options[:slideshow_id]
-      params.merge!({detailed: 1}) if options[:detailed]
-      xml_response = Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge(params)).body)
-      check_error xml_response
-      SlideshareApi::Model::Slideshow.new xml_response
+      params.merge!(slideshow_url: cleaned_url(options[:slideshow_url])) if options[:slideshow_url]
+      params.merge!(slideshow_id: options[:slideshow_id]) if options[:slideshow_id]
+      params.merge!(detailed: 1) if options[:detailed]
+      SlideshareApi::Model::Slideshow.new get('get_slideshow', params)
+    end
+
+    def slideshows(options = {})
+      params = {}
+      if options[:tag]
+        params.merge!(tag: options[:tag])
+        path = 'get_slideshows_by_tag'
+      elsif options[:group]
+        params.merge!(group_name: options[:group])
+        path = 'get_slideshows_by_group'
+      elsif options[:user]
+        params.merge!(username_for: options[:user])
+        path = 'get_slideshows_by_user'
+      else
+        raise SlideshareApi::Error, 'Required Parameter Missing'
+      end
+
+      params.merge!(detailed: 1) if options[:detailed]
+      get(path, params).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) }
     end
 
     private
+
+    def get(path, params)
+      xml_response = Nokogiri::XML(@connection.get(path, api_validation_params.merge(params)).body)
+      check_error xml_response
+      xml_response
+    end
 
     def cleaned_url(url)
       url.split('?')[0]

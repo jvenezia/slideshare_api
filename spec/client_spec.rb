@@ -65,4 +65,56 @@ describe SlideshareApi::Client do
       end
     end
   end
+
+  describe 'slideshows' do
+    context 'there is an error' do
+      context 'there is a param' do
+        let(:error_xml) { open('spec/fixtures/error.xml').read }
+
+        before { expect(connection).to receive(:get).and_return(connection) }
+        before { expect(connection).to receive(:body).and_return(error_xml) }
+
+        it { expect(-> { slideshare_client.slideshows user: '' }).to raise_error(SlideshareApi::Error) }
+      end
+
+      context 'param is missing' do
+        it { expect(-> { slideshare_client.slideshows }).to raise_error(SlideshareApi::Error) }
+      end
+    end
+
+    context 'there is no error' do
+      let(:slideshows_raw_xml) { open('spec/fixtures/slideshows.xml').read }
+      before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
+
+      context 'by tag' do
+        let(:tag) { 'ruby' }
+
+        before { expect(connection).to receive(:get).with('get_slideshows_by_tag', api_validation_params.merge({tag: tag})).and_return(connection) }
+
+        subject { slideshare_client.slideshows tag: tag }
+
+        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+      end
+
+      context 'by group' do
+        let(:group) { 'group' }
+
+        before { expect(connection).to receive(:get).with('get_slideshows_by_group', api_validation_params.merge({group_name: group})).and_return(connection) }
+
+        subject { slideshare_client.slideshows group: group }
+
+        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+      end
+
+      context 'by user' do
+        let(:user) { 'jeremyvenezia' }
+
+        before { expect(connection).to receive(:get).with('get_slideshows_by_user', api_validation_params.merge({username_for: user})).and_return(connection) }
+
+        subject { slideshare_client.slideshows user: user }
+
+        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+      end
+    end
+  end
 end
