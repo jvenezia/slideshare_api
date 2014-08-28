@@ -3,7 +3,7 @@
 [![Build](https://travis-ci.org/jvenezia/slideshare_api.svg?branch=master)](https://travis-ci.org/jvenezia/slideshare_api)
 [![Coverage Status](https://coveralls.io/repos/jvenezia/slideshare_api/badge.png)](https://coveralls.io/r/jvenezia/slideshare_api)
 
-Slideshare ruby wrapper for the Slideshare API.
+Ruby wrapper for the Slideshare API.
 
 **Warning**: SlideshareApi is currently under heavy development.
 
