@@ -20,13 +20,20 @@ module SlideshareApi
       params.merge!({slideshow_url: cleaned_url(options[:slideshow_url])}) if options[:slideshow_url]
       params.merge!({slideshow_id: options[:slideshow_id]}) if options[:slideshow_id]
       params.merge!({detailed: 1}) if options[:detailed]
-      SlideshareApi::Model::Slideshow.new Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge(params)).body)
+      xml_response = Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge(params)).body)
+      check_error xml_response
+      SlideshareApi::Model::Slideshow.new xml_response
     end
 
     private
 
     def cleaned_url(url)
       url.split('?')[0]
+    end
+
+    def check_error(xml_response)
+      error = xml_response.search('SlideShareServiceError')
+      raise SlideshareApi::Error, xml_response.search('Message').text unless error.empty?
     end
 
     def build_connection
