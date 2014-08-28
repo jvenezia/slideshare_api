@@ -15,9 +15,14 @@ module SlideshareApi
                     :related_slideshow_ids,
                     :is_private, :is_not_flagged, :url_is_secret, :is_embaddable, :is_visible, :is_visible_by_contacts
 
-      def initialize(slideshow_xml)
+      def initialize(slideshow_xml = nil)
         @original_slideshow_xml = slideshow_xml
+        setup_attributes_from_xml if @original_slideshow_xml
+      end
 
+      private
+
+      def setup_attributes_from_xml
         @id = integer_from_xml('ID')
         @title = text_from_xml('Title')
         @description = text_from_xml('Description')
@@ -53,43 +58,54 @@ module SlideshareApi
         @is_visible_by_contacts = boolean_from_xml('ShareWithContacts')
       end
 
-      private
-
       def text_from_xml(attribute_name)
-        @original_slideshow_xml.search(attribute_name).text
+        node = @original_slideshow_xml.search(attribute_name)
+        node.text unless node.empty?
       end
 
       def text_list_from_xml(attribute_name)
-        @original_slideshow_xml.search(attribute_name).map(&:text)
+        node = @original_slideshow_xml.search(attribute_name)
+        node.map(&:text) unless node.empty?
       end
 
       def boolean_from_xml(attribute_name)
-        @original_slideshow_xml.search(attribute_name).first.content == '1'
+        node = @original_slideshow_xml.search(attribute_name)
+        node.first.content == '1' unless node.empty?
       end
 
       def integer_from_xml(attribute_name)
-        text_from_xml(attribute_name).to_i
+        text = text_from_xml(attribute_name)
+        text.to_i if text
       end
 
       def integer_list_from_xml(attribute_name)
-        text_list_from_xml(attribute_name).map(&:to_i)
+        text_list = text_list_from_xml(attribute_name)
+        text_list.map(&:to_i) if text_list
       end
 
       def status_from_xml
         case integer_from_xml('Status')
-          when 0 then :queued_for_conversion
-          when 1 then :converting
-          when 2 then :converted
-          else :conversion_failed
+          when 0 then
+            :queued_for_conversion
+          when 1 then
+            :converting
+          when 2 then
+            :converted
+          else
+            :conversion_failed
         end
       end
 
       def type_from_xml
         case integer_from_xml('SlideshowType')
-          when 0 then :presentation
-          when 1 then :document
-          when 2 then :portfolio
-          else :video
+          when 0 then
+            :presentation
+          when 1 then
+            :document
+          when 2 then
+            :portfolio
+          else
+            :video
         end
       end
     end
