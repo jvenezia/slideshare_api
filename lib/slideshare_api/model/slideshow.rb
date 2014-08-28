@@ -13,12 +13,12 @@ module SlideshareApi
                     :download_count, :view_count, :comment_count, :favorite_count,
                     :slide_count,
                     :related_slideshow_ids,
-                    :privacy_level, :is_flagged, :url_is_secret, :is_embaddable, :is_visible, :is_visible_by_contacts
+                    :is_private, :is_not_flagged, :url_is_secret, :is_embaddable, :is_visible, :is_visible_by_contacts
 
       def initialize(slideshow_xml)
         @original_slideshow_xml = slideshow_xml
 
-        @id = text_from_xml('ID')
+        @id = integer_from_xml('ID')
         @title = text_from_xml('Title')
         @description = text_from_xml('Description')
         @status = text_from_xml('Status')
@@ -35,18 +35,18 @@ module SlideshareApi
         @is_downloadable = boolean_from_xml('Download')
         @slideshow_type = text_from_xml('SlideshowType')
         @is_in_contest = boolean_from_xml('InContest')
-        @user_id = text_from_xml('UserID')
+        @user_id = integer_from_xml('UserID')
         @ppt_location = text_from_xml('PPTLocation')
         @stripped_title = text_from_xml('StrippedTitle')
         @tags = text_list_from_xml('Tag')
-        @download_count = text_from_xml('NumDownloads')
-        @view_count = text_from_xml('NumViews')
-        @comment_count = text_from_xml('NumComments')
-        @favorite_count = text_from_xml('NumFavorites')
-        @slide_count = text_from_xml('NumSlides')
-        @related_slideshow_ids = text_list_from_xml('RelatedSlideshowID')
-        @privacy_level = text_from_xml('PrivacyLevel')
-        @is_flagged = boolean_from_xml('FlagVisible')
+        @download_count = integer_from_xml('NumDownloads')
+        @view_count = integer_from_xml('NumViews')
+        @comment_count = integer_from_xml('NumComments')
+        @favorite_count = integer_from_xml('NumFavorites')
+        @slide_count = integer_from_xml('NumSlides')
+        @related_slideshow_ids = integer_list_from_xml('RelatedSlideshowID')
+        @is_private = boolean_from_xml('PrivacyLevel')
+        @is_not_flagged = boolean_from_xml('FlagVisible')
         @is_visible = boolean_from_xml('ShowOnSS')
         @url_is_secret = boolean_from_xml('SecretURL')
         @is_embaddable = boolean_from_xml('AllowEmbed')
@@ -55,16 +55,24 @@ module SlideshareApi
 
       private
 
-      def boolean_from_xml(attribute_name)
-        @original_slideshow_xml.search(attribute_name).first.content == '1'
-      end
-
       def text_from_xml(attribute_name)
         @original_slideshow_xml.search(attribute_name).text
       end
 
       def text_list_from_xml(attribute_name)
         @original_slideshow_xml.search(attribute_name).map(&:text)
+      end
+
+      def boolean_from_xml(attribute_name)
+        @original_slideshow_xml.search(attribute_name).first.content == '1'
+      end
+
+      def integer_from_xml(attribute_name)
+        text_from_xml(attribute_name).to_i
+      end
+
+      def integer_list_from_xml(attribute_name)
+        text_list_from_xml(attribute_name).map(&:to_i)
       end
     end
   end

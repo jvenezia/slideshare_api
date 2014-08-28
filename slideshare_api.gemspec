@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SlideshareApi::VERSION
   spec.authors       = ['Jeremy Venezia']
   spec.email         = ['veneziajeremy@gmail.com']
-  spec.summary       = %q{Slideshare ruby wrapper for the Slideshare API.}
-  spec.description   = %q{Slideshare ruby wrapper for the Slideshare API.}
+  spec.summary       = %q{Ruby wrapper for the Slideshare API.}
+  spec.description   = %q{Ruby wrapper for the Slideshare API.}
   spec.homepage      = 'https://github.com/jvenezia/slideshare_api'
   spec.license       = 'MIT'
 

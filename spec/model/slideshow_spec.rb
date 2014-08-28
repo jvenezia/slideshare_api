@@ -7,7 +7,7 @@ describe SlideshareApi::Model::Slideshow do
     subject { SlideshareApi::Model::Slideshow.new slideshow_xml }
 
     it { expect(subject.original_slideshow_xml).to eq slideshow_xml }
-    it { expect(subject.id).to eq slideshow_xml.search('ID').text }
+    it { expect(subject.id).to eq slideshow_xml.search('ID').text.to_i }
     it { expect(subject.title).to eq slideshow_xml.search('Title').text }
     it { expect(subject.description).to eq slideshow_xml.search('Description').text }
     it { expect(subject.status).to eq slideshow_xml.search('Status').text }
@@ -44,26 +44,35 @@ describe SlideshareApi::Model::Slideshow do
       it { expect(subject.is_in_contest).to eq false }
     end
 
-    it { expect(subject.user_id).to eq slideshow_xml.search('UserID').text }
+    it { expect(subject.user_id).to eq slideshow_xml.search('UserID').text.to_i }
     it { expect(subject.ppt_location).to eq slideshow_xml.search('PPTLocation').text }
     it { expect(subject.stripped_title).to eq slideshow_xml.search('StrippedTitle').text }
     it { expect(subject.tags).to eq slideshow_xml.search('Tag').map(&:text) }
-    it { expect(subject.download_count).to eq slideshow_xml.search('NumDownloads').text }
-    it { expect(subject.view_count).to eq slideshow_xml.search('NumViews').text }
-    it { expect(subject.comment_count).to eq slideshow_xml.search('NumComments').text }
-    it { expect(subject.favorite_count).to eq slideshow_xml.search('NumFavorites').text }
-    it { expect(subject.slide_count).to eq slideshow_xml.search('NumSlides').text }
-    it { expect(subject.related_slideshow_ids).to eq slideshow_xml.search('RelatedSlideshowID').map(&:text) }
-    it { expect(subject.privacy_level).to eq slideshow_xml.search('PrivacyLevel').text }
+    it { expect(subject.download_count).to eq slideshow_xml.search('NumDownloads').text.to_i }
+    it { expect(subject.view_count).to eq slideshow_xml.search('NumViews').text.to_i }
+    it { expect(subject.comment_count).to eq slideshow_xml.search('NumComments').text.to_i }
+    it { expect(subject.favorite_count).to eq slideshow_xml.search('NumFavorites').text.to_i }
+    it { expect(subject.slide_count).to eq slideshow_xml.search('NumSlides').text.to_i }
+    it { expect(subject.related_slideshow_ids).to eq slideshow_xml.search('RelatedSlideshowID').map(&:text).map(&:to_i) }
+
+    context 'it is private' do
+      before { slideshow_xml.search('PrivacyLevel').first.content = 1 }
+      it { expect(subject.is_private).to eq true }
+    end
+
+    context 'it is not private' do
+      before { slideshow_xml.search('PrivacyLevel').first.content = 0 }
+      it { expect(subject.is_private).to eq false }
+    end
 
     context 'it is flagged' do
       before { slideshow_xml.search('FlagVisible').first.content = 1 }
-      it { expect(subject.is_flagged).to eq true }
+      it { expect(subject.is_not_flagged).to eq true }
     end
 
     context 'it is not flagged' do
       before { slideshow_xml.search('FlagVisible').first.content = 0 }
-      it { expect(subject.is_flagged).to eq false }
+      it { expect(subject.is_not_flagged).to eq false }
     end
 
     context 'it is visible' do
