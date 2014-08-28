@@ -6,7 +6,7 @@ module SlideshareApi
                     :created_at, :updated_at,
                     :username, :user_id,
                     :url, :thumbnail_url, :thumbnail_size, :thumbnail_small_url, :embed,
-                    :language, :format, :slideshow_type,
+                    :language, :format, :type,
                     :is_downloadable, :is_in_contest,
                     :ppt_location,
                     :tags,
@@ -21,7 +21,7 @@ module SlideshareApi
         @id = integer_from_xml('ID')
         @title = text_from_xml('Title')
         @description = text_from_xml('Description')
-        @status = text_from_xml('Status')
+        @status = status_from_xml
         @username = text_from_xml('Username')
         @url = text_from_xml('URL')
         @thumbnail_url = text_from_xml('ThumbnailURL')
@@ -33,7 +33,7 @@ module SlideshareApi
         @language = text_from_xml('Language')
         @format = text_from_xml('Format')
         @is_downloadable = boolean_from_xml('Download')
-        @slideshow_type = text_from_xml('SlideshowType')
+        @type = type_from_xml
         @is_in_contest = boolean_from_xml('InContest')
         @user_id = integer_from_xml('UserID')
         @ppt_location = text_from_xml('PPTLocation')
@@ -73,6 +73,24 @@ module SlideshareApi
 
       def integer_list_from_xml(attribute_name)
         text_list_from_xml(attribute_name).map(&:to_i)
+      end
+
+      def status_from_xml
+        case integer_from_xml('Status')
+          when 0 then :queued_for_conversion
+          when 1 then :converting
+          when 2 then :converted
+          else :conversion_failed
+        end
+      end
+
+      def type_from_xml
+        case integer_from_xml('SlideshowType')
+          when 0 then :presentation
+          when 1 then :document
+          when 2 then :portfolio
+          else :video
+        end
       end
     end
   end

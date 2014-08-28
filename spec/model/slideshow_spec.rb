@@ -10,7 +10,29 @@ describe SlideshareApi::Model::Slideshow do
     it { expect(subject.id).to eq slideshow_xml.search('ID').text.to_i }
     it { expect(subject.title).to eq slideshow_xml.search('Title').text }
     it { expect(subject.description).to eq slideshow_xml.search('Description').text }
-    it { expect(subject.status).to eq slideshow_xml.search('Status').text }
+
+    describe 'status' do
+      context 'queued_for_conversion' do
+        before { slideshow_xml.search('Status').first.content = 0 }
+        it { expect(subject.status).to eq :queued_for_conversion }
+      end
+
+      context 'converting' do
+        before { slideshow_xml.search('Status').first.content = 1 }
+        it { expect(subject.status).to eq :converting }
+      end
+
+      context 'converted' do
+        before { slideshow_xml.search('Status').first.content = 2 }
+        it { expect(subject.status).to eq :converted }
+      end
+
+      context 'conversion_failed' do
+        before { slideshow_xml.search('Status').first.content = 3 }
+        it { expect(subject.status).to eq :conversion_failed }
+      end
+    end
+
     it { expect(subject.username).to eq slideshow_xml.search('Username').text }
     it { expect(subject.url).to eq slideshow_xml.search('URL').text }
     it { expect(subject.thumbnail_url).to eq slideshow_xml.search('ThumbnailURL').text }
@@ -32,7 +54,27 @@ describe SlideshareApi::Model::Slideshow do
       it { expect(subject.is_downloadable).to eq false }
     end
 
-    it { expect(subject.slideshow_type).to eq slideshow_xml.search('SlideshowType').text }
+    describe 'type' do
+      context 'presentation' do
+        before { slideshow_xml.search('SlideshowType').first.content = 0 }
+        it { expect(subject.type).to eq :presentation }
+      end
+
+      context 'document' do
+        before { slideshow_xml.search('SlideshowType').first.content = 1 }
+        it { expect(subject.type).to eq :document }
+      end
+
+      context 'portfolio' do
+        before { slideshow_xml.search('SlideshowType').first.content = 2 }
+        it { expect(subject.type).to eq :portfolio }
+      end
+
+      context 'video' do
+        before { slideshow_xml.search('SlideshowType').first.content = 3 }
+        it { expect(subject.type).to eq :video }
+      end
+    end
 
     context 'it is in contest' do
       before { slideshow_xml.search('InContest').first.content = 1 }
