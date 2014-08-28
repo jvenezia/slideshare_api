@@ -17,13 +17,17 @@ module SlideshareApi
 
     def slideshow(options = {})
       params = {}
-      params.merge!({slideshow_url: options[:slideshow_url]}) if options[:slideshow_url]
+      params.merge!({slideshow_url: cleaned_url(options[:slideshow_url])}) if options[:slideshow_url]
       params.merge!({slideshow_id: options[:slideshow_id]}) if options[:slideshow_id]
       params.merge!({detailed: 1}) if options[:detailed]
       SlideshareApi::Model::Slideshow.new Nokogiri::XML(@connection.get('get_slideshow', api_validation_params.merge(params)).body)
     end
 
     private
+
+    def cleaned_url(url)
+      url.split('?')[0]
+    end
 
     def build_connection
       @connection = Faraday.new(url: SLIDESHARE_API_URL) do |faraday|
