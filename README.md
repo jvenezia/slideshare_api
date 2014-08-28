@@ -48,18 +48,18 @@ Get slideshows:
 ```ruby
 # by tag...
 tag = 'ruby'
-slideshow = client.slideshows(tag: tag) #=> returns an array of SlideshareApi::Model::Slideshow
+slideshows = client.slideshows(tag: tag) #=> returns an array of SlideshareApi::Model::Slideshow
 
 # by group...
 group = 'group'
-slideshow = client.slideshows(group: group) #=> returns an array of SlideshareApi::Model::Slideshow
+slideshows = client.slideshows(group: group) #=> returns an array of SlideshareApi::Model::Slideshow
 
 # by user...
 user = 'username'
-slideshow = client.slideshows(user: user) #=> returns an array of SlideshareApi::Model::Slideshow
+slideshows = client.slideshows(user: user) #=> returns an array of SlideshareApi::Model::Slideshow
 
 # with optional data...
-slideshow = client.slideshows(user: user, detailed: true) #=> returns an array of SlideshareApi::Model::Slideshow
+slideshows = client.slideshows(user: user, detailed: true) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
 
 ## Contributing
