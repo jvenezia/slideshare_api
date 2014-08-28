@@ -25,7 +25,7 @@ Get your **API Key** and **Shared Secret** from Slideshare [here](http://fr.slid
 
 ```ruby
 api_key = 'your api key'
-shared_secret = 'shared secret'
+shared_secret = 'your shared secret'
 
 client = SlideshareApi::Client.new api_key, shared_secret
 ```
