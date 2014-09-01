@@ -62,6 +62,12 @@ slideshows = client.slideshows(user: user) #=> returns an array of SlideshareApi
 slideshows = client.slideshows(user: user, detailed: true) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
 
+Search slideshows:
+```ruby
+query = 'elcurator'
+slideshows = client.search(query: query) #=> returns an array of SlideshareApi::Model::Slideshow
+```
+
 ## Contributing
 Feel free to contribute!
 

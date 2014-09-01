@@ -40,7 +40,7 @@ describe SlideshareApi::Client do
 
           subject { slideshare_client.slideshow slideshow_url: slideshow_url_with_params }
 
-          it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+          it { should eq SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
         end
 
         context 'url has no params' do
@@ -50,7 +50,7 @@ describe SlideshareApi::Client do
 
           subject { slideshare_client.slideshow slideshow_url: slideshow_url }
 
-          it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+          it { should eq SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
         end
       end
 
@@ -61,12 +61,12 @@ describe SlideshareApi::Client do
 
         subject { slideshare_client.slideshow slideshow_id: slideshow_id }
 
-        it { should eql? SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
+        it { should eq SlideshareApi::Model::Slideshow.new(Nokogiri::XML(slideshow_raw_xml)) }
       end
     end
   end
 
-  describe 'slideshows' do
+  describe '.slideshows' do
     context 'there is an error' do
       context 'there is a param' do
         let(:error_xml) { open('spec/fixtures/error.xml').read }
@@ -93,7 +93,7 @@ describe SlideshareApi::Client do
 
         subject { slideshare_client.slideshows tag: tag }
 
-        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+        it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
       end
 
       context 'by group' do
@@ -103,7 +103,7 @@ describe SlideshareApi::Client do
 
         subject { slideshare_client.slideshows group: group }
 
-        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+        it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
       end
 
       context 'by user' do
@@ -113,8 +113,31 @@ describe SlideshareApi::Client do
 
         subject { slideshare_client.slideshows user: user }
 
-        it { should eql? Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+        it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
       end
+    end
+  end
+
+  describe '.search' do
+    context 'there is an error' do
+      let(:error_xml) { open('spec/fixtures/error.xml').read }
+
+      before { expect(connection).to receive(:get).and_return(connection) }
+      before { expect(connection).to receive(:body).and_return(error_xml) }
+
+      it { expect(-> { slideshare_client.search }).to raise_error(SlideshareApi::Error) }
+    end
+
+    context 'there is no error' do
+      let(:query) { 'query' }
+      let(:slideshows_raw_xml) { open('spec/fixtures/slideshows.xml').read }
+
+      before { expect(connection).to receive(:get).with('search_slideshows', api_validation_params.merge({q: query})).and_return(connection) }
+      before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
+
+      subject { slideshare_client.search query: query }
+
+      it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
     end
   end
 end

@@ -42,6 +42,12 @@ module SlideshareApi
       get(path, params).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) }
     end
 
+    def search(options = {})
+      params = {}
+      params.merge!(q: options[:query]) if options[:query]
+      get('search_slideshows', params).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) }
+    end
+
     private
 
     def get(path, params)

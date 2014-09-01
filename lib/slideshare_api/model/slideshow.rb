@@ -20,6 +20,16 @@ module SlideshareApi
         setup_attributes_from_xml if @original_slideshow_xml
       end
 
+      def ==(other)
+        other.class == self.class && other.state == self.state
+      end
+
+      protected
+
+      def state
+        self.instance_variables.reject { |item| item == :@original_slideshow_xml }.map { |variable| self.instance_variable_get variable }
+      end
+
       private
 
       def setup_attributes_from_xml
