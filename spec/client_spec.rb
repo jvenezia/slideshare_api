@@ -125,7 +125,7 @@ describe SlideshareApi::Client do
       before { expect(connection).to receive(:get).and_return(connection) }
       before { expect(connection).to receive(:body).and_return(error_xml) }
 
-      it { expect(-> { slideshare_client.search }).to raise_error(SlideshareApi::Error) }
+      it { expect(-> { slideshare_client.search('') }).to raise_error(SlideshareApi::Error) }
     end
 
     context 'there is no error' do
@@ -135,7 +135,7 @@ describe SlideshareApi::Client do
       before { expect(connection).to receive(:get).with('search_slideshows', api_validation_params.merge({q: query})).and_return(connection) }
       before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
 
-      subject { slideshare_client.search query: query }
+      subject { slideshare_client.search query }
 
       it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
     end
