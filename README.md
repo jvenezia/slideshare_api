@@ -70,17 +70,17 @@ slideshows = client.search(query, options) #=> returns an array of SlideshareApi
 ```
 Optional search parameters:
 
-option | default | can be
---- | --- | ---
-detailed | false | true, false
-page | 1 |    
-per_page | 12 | maximum: 50
-language | 'en' | '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other)
-ordered_by | 'relevance' | 'mostviewed', 'mostdownloaded', 'lastest'
-upload_date | 'any' | 'week', 'month', 'year'
-downloadable | all | true, false
-format | 'all' | 'pdf' (PDF), 'ppt' (PowerPoint), 'odp' (Open Office), 'pps' (PowerPoint Slideshow), 'pot' (PowerPoint template)
-type | 'all' | 'presentations', 'documents', 'webinars', 'videos', 'infographics'
+| Option       | Default     | Can be                                                                                                                                                                                   |
+| ------------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| detailed     | false       | true, false                                                                                                                                                                              |
+| page         | 1           |                                                                                                                                                                                          |
+| per_page     | 12          | maximum: 50                                                                                                                                                                              |
+| language     | 'en'        | '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other) |
+| ordered_by   | 'relevance' | 'mostviewed', 'mostdownloaded', 'lastest'                                                                                                                                                |
+| upload_date  | 'any'       | 'week', 'month', 'year'                                                                                                                                                                  |
+| downloadable | all         | true, false                                                                                                                                                                              |
+| format       | 'all'       | 'pdf' (PDF), 'ppt' (PowerPoint), 'odp' (Open Office), 'pps' (PowerPoint Slideshow), 'pot' (PowerPoint template)                                                                          |
+| type         | 'all'       | 'presentations', 'documents', 'webinars', 'videos', 'infographics'                                                                                                                       |
 
 ## Contributing
 Feel free to contribute!
