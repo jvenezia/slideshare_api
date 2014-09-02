@@ -132,12 +132,24 @@ describe SlideshareApi::Client do
       let(:query) { 'query' }
       let(:slideshows_raw_xml) { open('spec/fixtures/slideshows.xml').read }
 
-      before { expect(connection).to receive(:get).with('search_slideshows', api_validation_params.merge({q: query})).and_return(connection) }
-      before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
+      context 'without options' do
+        before { expect(connection).to receive(:get).with('search_slideshows', api_validation_params.merge({q: query})).and_return(connection) }
+        before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
 
-      subject { slideshare_client.search query }
+        subject { slideshare_client.search query }
 
-      it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+        it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+      end
+
+      context 'with params' do
+        let(:params) { {q: query, detailed: 1, page: 2, items_per_page: 10, lang: 'fr', sort: 'mostviewed', upload_date: 'month', download: 0, fileformat: 'ppt', file_type: 'videos'} }
+        before { expect(connection).to receive(:get).with('search_slideshows', api_validation_params.merge(params)).and_return(connection) }
+        before { expect(connection).to receive(:body).and_return(slideshows_raw_xml) }
+
+        subject { slideshare_client.search query, detailed: true, page: 2, per_page: 10, language: 'fr', ordered_by: 'mostviewed', upload_date: 'month', downloadable: false, format: 'ppt', type: 'videos' }
+
+        it { should eq Nokogiri::XML(slideshows_raw_xml).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) } }
+      end
     end
   end
 end

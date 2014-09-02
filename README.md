@@ -30,7 +30,7 @@ shared_secret = 'your shared secret'
 client = SlideshareApi::Client.new api_key, shared_secret
 ```
 
-Get a slideshow:
+**Get a slideshow:**
 ```ruby
 # from url...
 slideshow_url = 'http://fr.slideshare.net/awesome/slideshow'
@@ -44,7 +44,7 @@ slideshow = client.slideshow(slideshow_id: slideshow_id) #=> returns a Slideshar
 slideshow = client.slideshow(slideshow_id: slideshow_id, detailed: true) #=> returns a SlideshareApi::Model::Slideshow
 ```
 
-Get slideshows:
+**Get slideshows:**
 ```ruby
 # by tag...
 tag = 'ruby'
@@ -62,11 +62,22 @@ slideshows = client.slideshows(user: user) #=> returns an array of SlideshareApi
 slideshows = client.slideshows(user: user, detailed: true) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
 
-Search slideshows:
+**Search slideshows:**
 ```ruby
 query = 'elcurator'
-slideshows = client.search(query) #=> returns an array of SlideshareApi::Model::Slideshow
+options = {detailed: true, page: 2}
+slideshows = client.search(query, options) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
+Optional search parameters:  
+* detailed      => default: false, can be: true, false
+* page          => default: 1
+* per_page      => default: 12, maximum: 50
+* language      => default: 'en', can be: '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other)
+* ordered_by    => default: 'relevance', can be: 'mostviewed', 'mostdownloaded', 'lastest'
+* upload_date   => The time period you want to restrict your search to. default: 'any', can be: 'week', 'month', 'year'
+* downloadable  => default: all, can be: true, false
+* format        => default: 'all', can be: 'pdf' (PDF), 'ppt' (PowerPoint), 'odp' (Open Office), 'pps' (PowerPoint Slideshow), 'pot' (PowerPoint template)
+* type          => default: 'all', can be: 'presentations', 'documents', 'webinars', 'videos', 'infographics'
 
 ## Contributing
 Feel free to contribute!

@@ -19,7 +19,7 @@ module SlideshareApi
       params = {}
       params.merge!(slideshow_url: cleaned_url(options[:slideshow_url])) if options[:slideshow_url]
       params.merge!(slideshow_id: options[:slideshow_id]) if options[:slideshow_id]
-      params.merge!(detailed: 1) if options[:detailed]
+      params.merge!(detailed: options[:detailed] ? 0 : 1) if options.has_key?(:detailed)
       SlideshareApi::Model::Slideshow.new get('get_slideshow', params)
     end
 
@@ -38,13 +38,22 @@ module SlideshareApi
         raise SlideshareApi::Error, 'Required Parameter Missing'
       end
 
-      params.merge!(detailed: 1) if options[:detailed]
+      params.merge!(detailed: options[:detailed] ? 1 : 0) if options.has_key?(:detailed)
       get(path, params).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) }
     end
 
-    def search(query)
+    def search(query, options = {})
       params = {}
       params.merge!(q: query)
+      params.merge!(detailed: options[:detailed] ? 1 : 0) if options.has_key?(:detailed)
+      params.merge!(page: options[:page]) if options[:page]
+      params.merge!(items_per_page: options[:per_page]) if options[:per_page]
+      params.merge!(lang: options[:language]) if options[:language]
+      params.merge!(sort: options[:ordered_by]) if options[:ordered_by]
+      params.merge!(upload_date: options[:upload_date]) if options[:upload_date]
+      params.merge!(download: options[:downloadable] ? 1 : 0) if options.has_key?(:downloadable)
+      params.merge!(fileformat: options[:format]) if options[:format]
+      params.merge!(file_type: options[:type]) if options[:type]
       get('search_slideshows', params).search('Slideshow').map { |s| SlideshareApi::Model::Slideshow.new(s) }
     end
 
