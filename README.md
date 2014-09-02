@@ -69,15 +69,17 @@ options = {detailed: true, page: 2}
 slideshows = client.search(query, options) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
 Optional search parameters:  
-* detailed      => default: false, can be: true, false
-* page          => default: 1
-* per_page      => default: 12, maximum: 50
-* language      => default: 'en', can be: '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other)
-* ordered_by    => default: 'relevance', can be: 'mostviewed', 'mostdownloaded', 'lastest'
-* upload_date   => The time period you want to restrict your search to. default: 'any', can be: 'week', 'month', 'year'
-* downloadable  => default: all, can be: true, false
-* format        => default: 'all', can be: 'pdf' (PDF), 'ppt' (PowerPoint), 'odp' (Open Office), 'pps' (PowerPoint Slideshow), 'pot' (PowerPoint template)
-* type          => default: 'all', can be: 'presentations', 'documents', 'webinars', 'videos', 'infographics'
+option | default | can be
+--- | --- | ---
+detailed | false | true, false
+page | 1 |  
+per_page | 12 | maximum: 50
+language | 'en' | '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other)
+ordered_by | 'relevance' | 'mostviewed', 'mostdownloaded', 'lastest'
+upload_date | 'any' | 'week', 'month', 'year'
+downloadable | all | true, false
+format | 'all' | 'pdf' (PDF), 'ppt' (PowerPoint), 'odp' (Open Office), 'pps' (PowerPoint Slideshow), 'pot' (PowerPoint template)
+type | 'all' | 'presentations', 'documents', 'webinars', 'videos', 'infographics'
 
 ## Contributing
 Feel free to contribute!
