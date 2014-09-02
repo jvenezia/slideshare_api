@@ -68,11 +68,12 @@ query = 'elcurator'
 options = {detailed: true, page: 2}
 slideshows = client.search(query, options) #=> returns an array of SlideshareApi::Model::Slideshow
 ```
-Optional search parameters:  
+Optional search parameters:
+
 option | default | can be
 --- | --- | ---
 detailed | false | true, false
-page | 1 |  
+page | 1 |    
 per_page | 12 | maximum: 50
 language | 'en' | '**' (All), 'es' (Spanish), 'pt' (Portuguese), 'fr' (French), 'it' (Italian), 'nl' (Dutch), 'de' (German), 'zh' (Chinese), 'ja' (Japanese), 'ko' (Korean), 'ro' (Romanian), '!!' (Other)
 ordered_by | 'relevance' | 'mostviewed', 'mostdownloaded', 'lastest'
