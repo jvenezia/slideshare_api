@@ -5,7 +5,8 @@ module SlideshareApi
                     :id, :title, :stripped_title, :description, :status,
                     :created_at, :updated_at,
                     :username, :user_id,
-                    :url, :thumbnail_url, :thumbnail_size, :thumbnail_small_url, :embed,
+                    :url, :thumbnail_url, :thumbnail_size, :embed,
+                    :thumbnail_small_url, :thumbnail_medium_url, :thumbnail_large_url,
                     :language, :format, :type,
                     :is_downloadable, :is_in_contest,
                     :ppt_location,
@@ -42,6 +43,8 @@ module SlideshareApi
         @thumbnail_url = text_from_xml('ThumbnailURL')
         @thumbnail_size = text_from_xml('ThumbnailSize')
         @thumbnail_small_url = text_from_xml('ThumbnailSmallURL')
+        @thumbnail_medium_url = text_from_xml('ThumbnailXLargeURL')
+        @thumbnail_large_url = text_from_xml('ThumbnailXXLargeURL')
         @embed = text_from_xml('Embed')
         @created_at = Time.parse text_from_xml('Created')
         @updated_at = Time.parse text_from_xml('Updated')
