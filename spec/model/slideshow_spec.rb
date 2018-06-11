@@ -46,6 +46,8 @@ describe SlideshareApi::Model::Slideshow do
         it { expect(subject.thumbnail_url).to eq slideshow_xml.search('ThumbnailURL').text }
         it { expect(subject.thumbnail_size).to eq slideshow_xml.search('ThumbnailSize').text }
         it { expect(subject.thumbnail_small_url).to eq slideshow_xml.search('ThumbnailSmallURL').text }
+        it { expect(subject.thumbnail_medium_url).to eq slideshow_xml.search('ThumbnailXLargeURL').text }
+        it { expect(subject.thumbnail_large_url).to eq slideshow_xml.search('ThumbnailXXLargeURL').text }
         it { expect(subject.embed).to eq slideshow_xml.search('Embed').text }
         it { expect(subject.created_at).to eq Time.parse slideshow_xml.search('Created').text }
         it { expect(subject.updated_at).to eq Time.parse slideshow_xml.search('Updated').text }
