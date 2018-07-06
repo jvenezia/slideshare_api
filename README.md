@@ -5,8 +5,6 @@
 
 Ruby wrapper for the Slideshare API.
 
-**Warning**: SlideshareApi is currently under heavy development.
-
 ## Installation
 
 Add this line to your application's Gemfile:
